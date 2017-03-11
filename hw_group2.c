@@ -29,7 +29,7 @@ struct contact_struct* make_new_contact(char* name, char* address, char* email, 
   struct contact_struct* new = (struct contact_struct* ) malloc(sizeof struct contact_struct);
 
   //mot trong cac truong vuot qua gia tri gioi han
-  if(strlen(name) > NAME_LEN || strlen(address) > ADDR_LEN || strlen(email) > EMAIL_LEN ||
+  if(strlen(name) > NAME_LEN || strlen(address) > ADDR_LEN || strlen(email) > EMAIL_LEN || \
     strlen(office_p) > PHONE_LEN || strlen(home_p) > PHONE_LEN || strlen(mobile_p) > PHONE_LEN)
     return NULL;
   strncpy(new.name, name, NAME_LEN);
@@ -135,4 +135,39 @@ struct contact_struct* search_by_field(struct contact_list* L, int field, char* 
     }
     if(result == 0) return tmp_ptr;
   }while((tmp_ptr = tmp_ptr->next_contact) != NULL)
+  return NULL;
+}
+
+//tra ve TRUE hoac FAIL
+int search_by_struct(struct contact_list* L, struct contact_struct* S){
+  if(L == NULL || L->head_ptr == NULL || S == NULL) return NULL;
+  struct contact_struct* tmp_struct = L->head_ptr;
+  struct contact_list tmp_list;
+  tmp_list->head_ptr = L->head_ptr;
+  tmp_list->tail_ptr = L->tail_ptr;
+  //lap qua tat ca cac truong cua struct
+  for(int i = NAME_S; i < MOBILE_P; i++){
+    //tra ve FAIL neu khong tim duoc truong nao khop
+    search_by_field(tmp_list, i, )
+  }
+}
+
+char* get_field_by_index(struct contact_struct* S, int index){
+  if(contact_struct == NULL) return NULL;
+  switch (index) {
+    case NAME_S:
+      return S->name;
+    case ADDRESS_S:
+      return S->address;
+    case EMAIL_S:
+      return S->email;
+    case HOME_P:
+      return S->home_phone;
+    case OFFICE_P:
+      return S->office_phone;
+    case MOBILE_P:
+      return S->mobile_phone;
+    default:
+      return NULL;
+  }
 }
