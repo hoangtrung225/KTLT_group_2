@@ -6,6 +6,7 @@
 #define EMAIL_LEN 32
 #define PHONE_LEN 10
 
+#define BUFFSIZE 128
 #define clear() printf("\033[H\033[J")
 
 struct contact_struct{
@@ -33,27 +34,33 @@ int edit_contact_field(struct contact_struct* elem, int field, char* value);
 struct contact_struct* search_by_field(struct contact_list* L, int field, char* value);
 int search_by_struct(struct contact_list* L, struct contact_struct* S);
 char* get_field_by_index(struct contact_struct* S, int index);
+int print_struct(struct contact_struct*);
+int get_user_input_field (void);
 
 
 int main(void){
   int input_code;
+  char buffer[BUFFSIZE];
   struct contact_struct tmp_contact;
+  struct contact_struct* contact_ptr;
   struct contact_list list;
   list.head_ptr = NULL;
   list.tail_ptr = NULL;
   while(true){
+    clear();
     printf("-----------------------Chon mot trong cac tuy chon-----------------------\n");
     printf("0: them thong tin lien lac\n");
     printf("1: tim kiem lien lac theo truong\n");
-    printf("2: kiem tra lien lac co ton tai danh sach\n");
+    printf("2: kiem tra lien lac co ton tai trong danh sach\n");
     printf("3: liet ke toan bo danh sach\n");
-    printf("4: thoat!\n");
+    printf("4: sua thong tin lien lac hien tai!\n");
     printf("chon: ");
     scanf("%d", &input_code);
-    clear();
     switch (input_code) {
-      case 0
+      case 0:
       //over flow...
+        clear();
+        printf("-----------------Them lien lac vao danh sach-----------------\n");
         printf("Ten lien lac: ");
         scanf("%s", tmp_contact.name);
         printf("Dia chi: ");
@@ -67,8 +74,57 @@ int main(void){
         printf("So dien thoai di dong: ", );
         scanf("%s", tmp_contact.mobile_phone);
 
+        contact_ptr = make_new_contact(tmp_contact.name, tmp_contact.address, tmp_contact.email, tmp_contact.office_phone, tmp_contact.home_phone, tmp_contact.mobile_phone);
+        //them lien lac vao list that bai
+        if(list_add(&list, contact_ptr) < 0){
+          printf("Loi khong the them phan tu vao danh ba\n");
+          continue;
+        }
+        break;
+      case 1:
+        struct contact_struct* current_contact;
+        printf("-----------------Tim kiem lien lac theo truong: -----------------\n");
+        int field = get_user_input_field;
 
+        printf("Gia tri can tim kiem: ");
+        scanf("%s", buffer);
+        current_contact = search_by_field(&list, field, buffer);
+        if(current_contact == NULL){
+          printf("Khong tim thay lien lac nao thoa man\n");
+          continue;
+        }
+        printf("-----------------Ket qua tim kiem: \n-----------------");
+        print_struct(current_contact);
+        break;
+      case 2:
+        printf("to be add, too lazy right now\n");
+        continue;
+      case 3:
+        printf("------------------Liet ke danh sach lien lac------------------");
+        contact_ptr = list.head_ptr;
+        int index = 0;
+        while(contact_ptr != NULL){
+          printf("Lien lac thu: %d", ++index);
+          print_struct(contact_ptr);
+          printf("------------------------------------------------------------");
+        }
+        break;
+      case 4:
+        printf("--------------------Lien lac hien tai--------------------");
+        print_struct(current_contact);
+        //nhap thong tin muon sua
+        field = get_user_input_field();
+        printf("Sua voi gia tri: ");
+        scanf("%s", buffer);
+        if(edit_contact_field(current_contact, field, buffer) < 0){
+            printf("Thay doi gia tri truong that bai\n");
+            continue;
+        }
+        printf("Thay doi gia tri thanh cong\n", );
+        print_struct(current_contact);
+        break;
     }
+    continue;
   }
 }
 struct contact_struct* make_new_contact(char* name, char* address, char* email, char* office_p, char* home_p, char* mobile_p){
@@ -219,4 +275,31 @@ char* get_field_by_index(struct contact_struct* S, int index){
     default:
       return NULL;
   }
+}
+
+int print_struct(struct contact_struct* S){
+  if(S == NULL){
+    printf("Loi lien lac rong\n");
+    return -1;
+  }
+  printf("name: %s\n", S->name);
+  printf("address: %s\n", S->address);
+  printf("email: %s\n", S->email);
+  printf("home phone: %s\n", S->home_phone);
+  printf("office phone: %s\n" S->office_phone);
+  printf("mobile phone: %s\n", S->mobile_phone);
+  return 0;
+}
+
+int get_user_input_field(){
+  printf("Chon truong : ");
+  printf("%d: name\n", NAME_S);
+  printf("%d: address\n", ADDRESS_S);
+  printf("%d: email\n", EMAIL_S);
+  printf("%d: home phone\n", HOME_P);
+  printf("%d: office phone\n" OFFICE_P);
+  printf("%d: mobile phone\n", MOBILE_P);
+  int field;
+  scanf("%d", &field);
+  return field;
 }
