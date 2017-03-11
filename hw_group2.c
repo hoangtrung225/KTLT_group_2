@@ -100,6 +100,7 @@ int main(void){
         break;
       case 2:
         printf("to be add, too lazy right now\n");
+        getchar();
         continue;
       case 3:
         printf("------------------Liet ke danh sach lien lac------------------\n");
