@@ -6,6 +6,8 @@
 #define EMAIL_LEN 32
 #define PHONE_LEN 10
 
+#define clear() printf("\033[H\033[J")
+
 struct contact_struct{
   char name[NAME_LEN + 1];
   char address[ADDR_LEN + 1];
@@ -25,6 +27,43 @@ enum {
   NAME_S, ADDRESS_S, EMAIL_S, OFFICE_P, HOME_P, MOBILE_P
 };
 
+
+int main(void){
+  int input_code;
+  struct contact_struct tmp_contact;
+  struct contact_list list;
+  list.head_ptr = NULL;
+  list.tail_ptr = NULL;
+  while(true){
+    printf("-----------------------Chon mot trong cac tuy chon-----------------------\n");
+    printf("0: them thong tin lien lac\n");
+    printf("1: tim kiem lien lac theo truong\n");
+    printf("2: kiem tra lien lac co ton tai danh sach\n");
+    printf("3: liet ke toan bo danh sach\n");
+    printf("4: thoat!\n");
+    printf("chon: ");
+    scanf("%d", &input_code);
+    clear();
+    switch (input_code) {
+      case 0
+      //over flow...
+        printf("Ten lien lac: ");
+        scanf("%s", tmp_contact.name);
+        printf("Dia chi: ");
+        scanf("%s", tmp_contact.address);
+        printf("Email: ");
+        scanf("%s", tmp_contact.email);
+        printf("So dien thoai gia dinh: ");
+        scanf("%s", tmp_contact.home_phone);
+        printf("So dien thoai co quan: ");
+        scanf("%s", tmp_contact.office_phone);
+        printf("So dien thoai di dong: ", );
+        scanf("%s", tmp_contact.mobile_phone);
+
+
+    }
+  }
+}
 struct contact_struct* make_new_contact(char* name, char* address, char* email, char* office_p, char* home_p, char* mobile_p){
   struct contact_struct* new = (struct contact_struct* ) malloc(sizeof struct contact_struct);
 
@@ -45,7 +84,7 @@ struct contact_struct* make_new_contact(char* name, char* address, char* email, 
 }
 
 //them elem vao cuoi list
-int list_add (struct contact_struct* elem, struct contact_list* L){
+int list_add (struct contact_list* L, struct contact_struct* elem){
   if(L == NULL) return -1;
 
   //list chua co phan tu them phan tu dau tien
@@ -138,18 +177,21 @@ struct contact_struct* search_by_field(struct contact_list* L, int field, char* 
   return NULL;
 }
 
-//tra ve TRUE hoac FAIL
+//tra ve 0 neu tim thay, -1 neu khong thay
 int search_by_struct(struct contact_list* L, struct contact_struct* S){
-  if(L == NULL || L->head_ptr == NULL || S == NULL) return NULL;
+  if(L == NULL || L->head_ptr == NULL || S == NULL) return -1;
   struct contact_struct* tmp_struct = L->head_ptr;
   struct contact_list tmp_list;
   tmp_list->head_ptr = L->head_ptr;
   tmp_list->tail_ptr = L->tail_ptr;
   //lap qua tat ca cac truong cua struct
-  for(int i = NAME_S; i < MOBILE_P; i++){
+  for(int field = NAME_S; field <= MOBILE_P; field++){
     //tra ve FAIL neu khong tim duoc truong nao khop
-    search_by_field(tmp_list, i, )
+    tmp_list->head_ptr = search_by_field(tmp_list, field, get_field_by_index(S, field));
+    if(tmp_list->head_ptr == NULL)
+      return -1;
   }
+  return 0;
 }
 
 char* get_field_by_index(struct contact_struct* S, int index){
