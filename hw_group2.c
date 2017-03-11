@@ -164,6 +164,7 @@ int list_add (struct contact_list* L, struct contact_struct* elem){
 
   //cho phan tu cuoi tro vao elem
   L->tail_ptr->next_contact = elem;
+  L->tail_ptr = elem;
   return 0;
 }
 
