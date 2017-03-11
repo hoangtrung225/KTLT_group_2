@@ -27,6 +27,13 @@ enum {
   NAME_S, ADDRESS_S, EMAIL_S, OFFICE_P, HOME_P, MOBILE_P
 };
 
+struct contact_struct* make_new_contact(char* name, char* address, char* email, char* office_p, char* home_p, char* mobile_p);
+int list_add (struct contact_list* L, struct contact_struct* elem);
+int edit_contact_field(struct contact_struct* elem, int field, char* value);
+struct contact_struct* search_by_field(struct contact_list* L, int field, char* value);
+int search_by_struct(struct contact_list* L, struct contact_struct* S);
+char* get_field_by_index(struct contact_struct* S, int index);
+
 
 int main(void){
   int input_code;
