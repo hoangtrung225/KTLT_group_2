@@ -38,6 +38,7 @@ int search_by_struct(struct contact_list* L, struct contact_struct* S);
 char* get_field_by_index(struct contact_struct* S, int index);
 int print_struct(struct contact_struct*);
 int get_user_input_field (void);
+int list_destroy(struct contact_list* L);
 
 
 int main(void){
@@ -56,6 +57,7 @@ int main(void){
     printf("2: kiem tra lien lac co ton tai trong danh sach\n");
     printf("3: liet ke toan bo danh sach\n");
     printf("4: sua thong tin lien lac hien tai!\n");
+    printf("5: thoat\n");
     printf("chon: ");
     scanf("%d", &input_code);
     switch (input_code) {
@@ -92,12 +94,17 @@ int main(void){
         current_contact = search_by_field(&list, field, buffer);
         if(current_contact == NULL){
           printf("Khong tim thay lien lac nao thoa man\n");
-          continue;
+          getchar();
+          break;
         }
+        else{
         printf("-----------------Ket qua tim kiem: -----------------\n");
         print_struct(current_contact);
         getchar();
         break;
+        }
+        getchar();
+        continue;
       case 2:
         clear();
         printf("-----------------Kiem tra thong tin lien lac KHONG DAU CACH-----------------\n");
@@ -121,7 +128,7 @@ int main(void){
         }
         else{
           printf("Tim thay lien lac trong danh sasch\n");
-           getchar();
+          getchar();
         }
         getchar();
         continue;
@@ -151,6 +158,11 @@ int main(void){
         printf("Thay doi gia tri thanh cong\n");
         print_struct(current_contact);
         break;
+      case 5:
+        printf("Tien hanh don dep\n");
+        getchar();
+        list_destroy(&list);
+        return 0;
     }
     getchar();
     continue;
@@ -193,6 +205,7 @@ int list_add (struct contact_list* L, struct contact_struct* elem){
 }
 
 int edit_contact_field(struct contact_struct* elem, int field, char* value){
+  if(elem == NULL) return -1;
   switch (field) {
     case NAME_S:
       if(strlen(value) > NAME_LEN)
@@ -332,4 +345,15 @@ int get_user_input_field(){
   int field;
   scanf("%d", &field);
   return field;
+}
+
+int list_destroy(struct contact_list* L){
+  struct contact_struct* tmp_ptr, *destroy_ptr;
+  tmp_ptr = L->head_ptr;
+  while(tmp_ptr != NULL){
+    destroy_ptr = tmp_ptr;
+    free(destroy_ptr);
+    tmp_ptr = tmp_ptr->next_contact;
+  }
+  return 0;
 }
