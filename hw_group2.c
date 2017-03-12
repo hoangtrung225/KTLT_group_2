@@ -99,7 +99,30 @@ int main(void){
         getchar();
         break;
       case 2:
-        printf("to be add, too lazy right now\n");
+        clear();
+        printf("-----------------Kiem tra thong tin lien lac KHONG DAU CACH-----------------\n");
+        printf("Ten lien lac: ");
+        scanf("%s", tmp_contact.name);
+        printf("Dia chi: ");
+        scanf("%s", tmp_contact.address);
+        printf("Email: ");
+        scanf("%s", tmp_contact.email);
+        printf("So dien thoai gia dinh: ");
+        scanf("%s", tmp_contact.home_phone);
+        printf("So dien thoai co quan: ");
+        scanf("%s", tmp_contact.office_phone);
+        printf("So dien thoai di dong: ");
+        scanf("%s", tmp_contact.mobile_phone);
+
+        if(search_by_struct(&list, &tmp_contact) == -1)
+        {
+          printf("Khong tim thay lien lac nhu yeu cau\n");
+          getchar();
+        }
+        else{
+          printf("Tim thay lien lac trong danh sasch\n");
+           getchar();
+        }
         getchar();
         continue;
       case 3:
